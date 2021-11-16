@@ -1,12 +1,13 @@
 import javax.crypto.spec.PSource;
+import javax.swing.*;
 import java.util.Scanner;
 
 /*
 Account class w
  */
 public class Account {
-    int balance;
-    int recentTransaction;
+    float balance;
+    float recentTransaction;
     String firstName;
     String lastName;
     String customerName;
@@ -25,6 +26,8 @@ public class Account {
 
         SetCustomerID();
         System.out.println("Welcome " + firstName + " " + lastName + "\nYour account ID is " + accountID);
+
+        showMenu();
     }
 
     public void SetCustomerID(){
@@ -34,7 +37,7 @@ public class Account {
     }
 
     // to deposit money
-    void deposit(int amount) {
+    void deposit(float amount) {
         if(amount != 0) {
             balance = balance + amount;
             recentTransaction = amount;
@@ -42,7 +45,7 @@ public class Account {
     }
 
     /// to withdraw money
-    void withdraw(int amount){
+    void withdraw(float amount){
         if(amount != 0) {
             balance = balance - amount;
             recentTransaction = -amount;
@@ -50,16 +53,16 @@ public class Account {
     }
 
     // to check balance
-    public int checkBalance(){
+    public float checkBalance(){
         return balance;
     }
 
     // for most recent transaction
     void getRecentTransaction(){
         if(recentTransaction < 0) {
-            System.out.println("There was a deposit of: £" + recentTransaction);
-        } else if(recentTransaction > 0) {
             System.out.println("There was a withdrawal of: £" + recentTransaction);
+        } else if(recentTransaction > 0) {
+            System.out.println("There was a deposit of: £" + recentTransaction);
         } else {
             System.out.println("There have been no transactions");
         }
@@ -74,18 +77,57 @@ public class Account {
 
     void showMenu() {
         char item = '\0';
-        System.out.println("How would you like to proceed? Enter the letter option below");
-        System.out.println();
-        System.out.println("A. Check your balance");
-        System.out.println("B. Make a deposit");
-        System.out.println("C. Withdraw some money");
-        System.out.println("D. View most recent transaction");
-        System.out.println("E. Calculate interest on current balance");
-        System.out.println("F. EXIT");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How would you like to proceed?");
+        System.out.println("A. Check your balance \nB. Make a deposit \nC. Withdraw some money \nD. View most recent transaction \nE. Calculate interest on current balance \nF. EXIT");
 
         do {
-            System.out.println();
-        }
+            System.out.println("Enter the letter option below: ");
+            char item1 = scanner.next().charAt(0);
+            item = Character.toUpperCase(item1);        // in case user enters a lower case char
+
+            switch(item) {
+                case 'A' :
+                    System.out.println("Account Balance is: £" + balance);
+                    break;
+                case 'B':
+                    System.out.print("Please enter an amount to deposit: £");
+                    float amount = scanner.nextFloat();
+                    deposit(amount);
+                    System.out.println("You have deposited £" + amount);
+                    System.out.println("New account balance £" + balance);
+                    break;
+
+                case 'C':
+                    System.out.print("Please enter an amount to withdraw: £");
+                    float amount2 = scanner.nextFloat();
+                    withdraw(amount2);
+                    System.out.println("You have withdrawn £" + amount2);
+                    System.out.println("New account balance is £ " + balance);
+                    break;
+
+                case 'D':
+                   getRecentTransaction();
+                   System.out.println(recentTransaction);
+                   break;
+
+                case 'E':
+                    System.out.println("Enter how many years interest accrued");
+                    int years = scanner.nextInt();
+                    calculateInterest(years);
+                    break;
+
+                case 'F':
+                    System.out.println();
+                    break;
+
+                default:
+                    System.out.println("Error! Invalid option selected- please enter A, B, C, D, E, or F");
+                    break;
+            }
+
+        } while (item != 'F');
+        System.out.println("Thank you for banking with us. Have a good day!");
     }
 
 }
