@@ -11,6 +11,6 @@ A bank app that allows:
 
 public class MyBank {
     public static void main(String[] args) {
-
+        Account ac1 = new Account();
     }
 }
